@@ -12,12 +12,12 @@ services:
     ports:
       - 3001:3001
     environment:
-      - DB_URL=mongodb://admin:pass123@db:27017/?authSource=admin
+      - DB_URL=mongodb://admin:pass123@mongodb1:27017/user_db?authSource=admin
     restart: always
     depends_on:
-      - db
+      - mongodb1
     command: ["node", "index.js"]
-  db:
+  mongodb1:
     image: mongo:4.4
     ports:
       - 27017:27017
@@ -26,7 +26,7 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=pass123
     volumes:
       - mongodb-sarvin:/data/db
-  mongoExpress:
+  mongoexpress1:
     image: mongo-express
     ports:
       - 8081:8081
@@ -36,9 +36,9 @@ services:
       - ME_CONFIG_BASICAUTH_PASSWORD=sarvinpass
       - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
       - ME_CONFIG_MONGODB_ADMINPASSWORD=pass123
-      - ME_CONFIG_MONGODB_SERVER=db
+      - ME_CONFIG_MONGODB_SERVER=mongodb1
     depends_on:
-      - db
+      - mongodb1
 volumes:
   mongodb-sarvin:
    
